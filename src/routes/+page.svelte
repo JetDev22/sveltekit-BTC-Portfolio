@@ -101,7 +101,8 @@
     justify-content: center;
 
     padding: 10px;
-    margin: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     margin-left: auto;
     margin-right: auto;
     max-width: 700px;
@@ -127,6 +128,7 @@
 
   summary{
     margin-bottom: 5px;
+    font-size: 20px;
   }
 
   button{
@@ -135,6 +137,7 @@
   }
 
   table{
+    font-size: 20px;
     margin-left: auto;
     margin-right: auto;
     width: 350px
