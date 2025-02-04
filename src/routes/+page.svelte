@@ -59,6 +59,9 @@
   onMount(() =>{
     getPriceData();
     loadPortfolio();
+    // save pseudo values to localstorage to avoid NULL
+    localStorage.setItem("eurPrice", "1,0");
+    localStorage.setItem("usdPrice", "1,0");
   })
 
   // Portfolio Data Processor
