@@ -18,8 +18,6 @@
     const data = await response.json();
     eurPrice = data.bpi.EUR.rate;
     usdPrice = data.bpi.USD.rate;
-    localStorage.setItem("eurPrice", eurPrice);
-    localStorage.setItem("usdPrice", usdPrice);
   };
   
   //onMount(() => getPriceData());
@@ -70,9 +68,13 @@
   let curRef;
 
   if(browser){
-    eurCalc = parseFloat(localStorage.getItem("eurPrice").replace(",", ""));
-    usdCalc = parseFloat(localStorage.getItem("usdPrice").replace(",", ""));
-    curRef = localStorage.getItem("currency");
+    try {
+      eurCalc = parseFloat(localStorage.getItem("eurPrice").replace(",", ""));
+      usdCalc = parseFloat(localStorage.getItem("usdPrice").replace(",", ""));
+      curRef = localStorage.getItem("currency");
+    } catch (error) {
+      console.log("Apparently null value for localStorage");
+    }  
   }
 
   //console.log(eurCalc, usdCalc, curRef);
