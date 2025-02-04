@@ -18,6 +18,8 @@
     const data = await response.json();
     eurPrice = data.bpi.EUR.rate;
     usdPrice = data.bpi.USD.rate;
+    localStorage.setItem("eurPrice", eurPrice);
+    localStorage.setItem("usdPrice", usdPrice);
   };
   
   //onMount(() => getPriceData());
