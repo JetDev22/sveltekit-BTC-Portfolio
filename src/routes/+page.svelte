@@ -11,6 +11,7 @@
   let eurPrice = $state(0);
   let usdPrice = $state(0);
   let calcPrice;
+  let curRef = "EUR";
 
   async function getPriceData(){
     let url = "https://api.coindesk.com/v1/bpi/currentprice/eur.json";
@@ -64,7 +65,6 @@
   // Portfolio Data Processor
   let eurCalc;
   let usdCalc;
-  let curRef;
 
   if(browser){
     try {
@@ -89,6 +89,8 @@
   let roiEUR = $derived(((pValEUR - pCost)/pCost)*100);
   let roiUSD = $derived(((pValUSD - pCost)/pCost)*100);
 
+  console.log(curRef);
+
 </script>
 
 <style>
@@ -101,7 +103,7 @@
     justify-content: center;
 
     padding: 10px;
-    margin-top: 15px;
+    margin-top: 10px;
     margin-bottom: 15px;
     margin-left: auto;
     margin-right: auto;
@@ -142,6 +144,10 @@
     margin-right: auto;
     width: 350px
   }
+ 
+  h2{
+    margin-top: 5px;
+  }
 </style>
 
 <div id="Logo">
@@ -149,11 +155,12 @@
 </div>
 
 <div id="Price">
-  {#if currency == "EUR"}
+  <b>Current &#8383; Price</b>
+  {#if currency == "EUR" || currency == "eur"}
     <h1>{eurPrice} €</h1>
     {utc}
   {/if}
-  {#if currency == "USD"}
+  {#if currency == "USD" || currency == "usd"}
     <h1 id="price">{usdPrice} $</h1>
     {utc}
   {/if}
@@ -179,15 +186,7 @@
     </tr>
     <tr>
       <td style="text-align: left;">Portfolio Value</td>
-      {#if curRef == "EUR"}
-      <td style="text-align: right;">{pValEUR.toLocaleString("currency", {maximumFractionDigits: 2})} €</td>
-      {:else}
-      <td style="text-align: right;">{pValUSD.toLocaleString("currency", {maximumFractionDigits: 2})} $</td>
-      {/if}
-    </tr>
-    <tr>
-      <td style="text-align: left;">Portfolio Cost</td>
-      {#if curRef == "EUR"}
+      {#if curRef == "EUR" || curRef == "eur"}
       <td style="text-align: right;">{pCost.toLocaleString("currency", {maximumFractionDigits: 2})} €</td>
       {:else}
       <td style="text-align: right;">{pCost.toLocaleString("currency", {maximumFractionDigits: 2})} $</td>
@@ -195,7 +194,7 @@
     </tr>
     <tr>
       <td style="text-align: left;">Average Price</td>
-        {#if curRef == "EUR"}
+        {#if curRef == "EUR" || curRef == "eur"}
         <td style="text-align: right;">{avgView.toLocaleString("currency", {maximumFractionDigits: 2})} €</td>
         {:else}
         <td style="text-align: right;">{avgView.toLocaleString("currency", {maximumFractionDigits: 2})} $</td>
@@ -203,7 +202,7 @@
     </tr>
     <tr>
       <td style="text-align: left;">R.O.I.</td>
-      {#if curRef = "EUR"}
+      {#if curRef == "EUR" || curRef == "eur"}
       <td style="text-align: right;">{roiEUR.toFixed(2)} %</td>
       {:else}
       <td style="text-align: right;">{roiUSD.toFixed(2)} %</td>
@@ -211,21 +210,21 @@
     </tr>
     <tr>
       <td style="text-align: left;">Yield</td>
-      {#if curRef == "EUR"}
+      {#if curRef == "EUR" || curRef == "eur"}
       <td style="text-align: right;">{eurYield.toLocaleString("currency", {maximumFractionDigits: 2})} €</td>
       {:else}
       <td style="text-align: right;">{usdYield.toLocaleString("currency", {maximumFractionDigits: 2})} $</td>
       {/if}
     <tr>
       <td style="text-align: left;">DCA / Month</td>
-      {#if curRef == "EUR"}
+      {#if curRef == "EUR" || curRef == "eur"}
       <td style="text-align: right;">{dcaView.toLocaleString("currency", {maximumFractionDigits: 2})} €</td>
       {:else}
       <td style="text-align: right;">{dcaView.toLocaleString("currency", {maximumFractionDigits: 2})} $</td>
       {/if}
     <tr>
       <td style="text-align: left;">DCA in &#8383;</td>
-      {#if curRef == "EUR"}
+      {#if curRef == "EUR" || curRef == "eur"}
       <td style="text-align: right;">{dcaEUR.toFixed(5)} &#8383;</td>
       {:else}
       <td style="text-align: right;">{dcaUSD.toFixed(5)} &#8383;</td>
@@ -236,6 +235,7 @@
 </div>
 
 <div id="Disclaimer">
+  <h2>Disclaimer</h2>
   All data is saved only in your browser. No data is send back to the server. This web app uses CSR (Client side rendering only).
-  <br>Stay vigilant and HODL &#8383;
+    <br>Stay vigilant and HODL &#8383;
 </div>
