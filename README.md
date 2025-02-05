@@ -15,4 +15,4 @@ To be honest I am not the biggest fan of React and started looking for alternati
 
 # My Deployment
 I have it running on my hetzner arm server using coolify to deploy it.
-You can try it [here](http://y44sc4skccc84w4oww004csg.159.69.92.64.sslip.io/)
+You can try it [here](https://tinyurl.com/hodl4life)
