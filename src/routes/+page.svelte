@@ -89,8 +89,6 @@
   let roiEUR = $derived(((pValEUR - pCost)/pCost)*100);
   let roiUSD = $derived(((pValUSD - pCost)/pCost)*100);
 
-  console.log(curRef);
-
 </script>
 
 <style>
