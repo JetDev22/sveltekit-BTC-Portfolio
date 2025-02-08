@@ -147,11 +147,11 @@
 <div id="Price">
   <b>Current &#8383; Price</b>
   {#if currency == "EUR" || currency == "eur"}
-    <h1>{eurPrice} €</h1>
+    <h1>{eurPrice.toLocaleString("currency", {maximumFractionDigits: 2})} €</h1>
     {utc}
   {/if}
   {#if currency == "USD" || currency == "usd"}
-    <h1 id="price">{usdPrice} $</h1>
+    <h1 id="price">{usdPrice.toLocaleString("currency", {maximumFractionDigits: 2})} $</h1>
     {utc}
   {/if}
 </div>
