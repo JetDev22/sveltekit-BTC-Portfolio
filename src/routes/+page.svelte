@@ -5,31 +5,44 @@
   import {onMount} from 'svelte';
 
   // Get current time
-  const utc = new Date().toUTCString();
-
-  // Get current BTC Price in € and $
-  let eurPrice = $state(0);
-  let usdPrice = $state(0);
-  let calcPrice;
-  let curRef = "EUR";
+  const utc = new Date().toUTCString(); 
 
   async function getPriceData(){
-    let url = "https://api.coindesk.com/v1/bpi/currentprice/eur.json";
+    let url = "https://blockchain.info/ticker";
     const response = await fetch(url);
     const data = await response.json();
-    eurPrice = data.bpi.EUR.rate;
-    usdPrice = data.bpi.USD.rate;
-    localStorage.setItem("eurPrice", eurPrice);
-    localStorage.setItem("usdPrice", usdPrice);
-  };
-  
-  //onMount(() => getPriceData());
+    eurPrice = data.EUR.last;
+    usdPrice = data.USD.last;
+    pCost = btc * avg;
+    pValEUR = btc * eurPrice;
+    pValUSD = btc * usdPrice;
+    dcaUSD = dca / usdPrice;
+    dcaEUR = dca / eurPrice;
+    eurYield = pValEUR - pCost;
+    usdYield = pValUSD - pCost;
+    roiEUR = ((pValEUR - pCost)/pCost)*100;
+    roiUSD = ((pValUSD - pCost)/pCost)*100;
+    avg = avg * 1;
+    dca = dca * 1;
+};
 
   // User Portfolio Setup
+  let eurPrice = $state(0);
+  let usdPrice = $state(0);
   let btc = $state(0);
   let avg = $state(0);
   let dca = $state(0);
   let currency = $state("EUR");
+  let pCost = $state(0);
+  let pValEUR = $state(0);
+  let pValUSD = $state(0);
+  let dcaUSD = $state(0);
+  let dcaEUR = $state(0);
+  let eurYield = $state(0);
+  let usdYield = $state(0);
+  let roiEUR = $state(0);
+  let roiUSD = $state(0);
+
 
   function saveUserPortfolio(){
     localStorage.setItem("btc", btc.toString());
@@ -54,40 +67,19 @@
       dca = localStorage.getItem("dca");
       currency = localStorage.getItem("currency");
     }
+    else{
+      btc = 0;
+      avg = 0;
+      dca = 0;
+      currency = "EUR";
+    }
   }
 
   // Load Portfolio Data and current BTC Price on page load
   onMount(() =>{
-    getPriceData();
     loadPortfolio();
+    getPriceData();
   })
-
-  // Portfolio Data Processor
-  let eurCalc;
-  let usdCalc;
-
-  if(browser){
-    try {
-      eurCalc = parseFloat(localStorage.getItem("eurPrice").replace(",", ""));
-      usdCalc = parseFloat(localStorage.getItem("usdPrice").replace(",", ""));
-      curRef = localStorage.getItem("currency");
-    } catch (error) {
-      console.log("Apparently null value for localStorage");
-    }  
-  }
-
-  //console.log(eurCalc, usdCalc, curRef);
-  let avgView = $derived(avg * 1);
-  let dcaView = $derived(dca * 1);
-  let pCost = $derived(btc * avg);
-  let pValEUR = $derived(btc * eurCalc);
-  let pValUSD = $derived(btc * usdCalc);
-  let dcaUSD = $derived(dca / usdCalc);
-  let dcaEUR = $derived(dca / eurCalc);
-  let eurYield = $derived(pValEUR - pCost);
-  let usdYield = $derived(pValUSD - pCost);
-  let roiEUR = $derived(((pValEUR - pCost)/pCost)*100);
-  let roiUSD = $derived(((pValUSD - pCost)/pCost)*100);
 
 </script>
 
@@ -184,7 +176,7 @@
     </tr>
     <tr>
       <td style="text-align: left;">Portfolio Value</td>
-      {#if curRef == "EUR" || curRef == "eur"}
+      {#if currency == "EUR" || currency == "eur"}
       <td style="text-align: right;">{pCost.toLocaleString("currency", {maximumFractionDigits: 2})} €</td>
       {:else}
       <td style="text-align: right;">{pCost.toLocaleString("currency", {maximumFractionDigits: 2})} $</td>
@@ -192,15 +184,15 @@
     </tr>
     <tr>
       <td style="text-align: left;">Average Price</td>
-        {#if curRef == "EUR" || curRef == "eur"}
-        <td style="text-align: right;">{avgView.toLocaleString("currency", {maximumFractionDigits: 2})} €</td>
+        {#if currency == "EUR" || currency == "eur"}
+        <td style="text-align: right;">{avg.toLocaleString("currency", {maximumFractionDigits: 2})} €</td>
         {:else}
-        <td style="text-align: right;">{avgView.toLocaleString("currency", {maximumFractionDigits: 2})} $</td>
+        <td style="text-align: right;">{avg.toLocaleString("currency", {maximumFractionDigits: 2})} $</td>
         {/if}
     </tr>
     <tr>
       <td style="text-align: left;">R.O.I.</td>
-      {#if curRef == "EUR" || curRef == "eur"}
+      {#if currency == "EUR" || currency == "eur"}
       <td style="text-align: right;">{roiEUR.toFixed(2)} %</td>
       {:else}
       <td style="text-align: right;">{roiUSD.toFixed(2)} %</td>
@@ -208,21 +200,21 @@
     </tr>
     <tr>
       <td style="text-align: left;">Yield</td>
-      {#if curRef == "EUR" || curRef == "eur"}
+      {#if currency == "EUR" || currency == "eur"}
       <td style="text-align: right;">{eurYield.toLocaleString("currency", {maximumFractionDigits: 2})} €</td>
       {:else}
       <td style="text-align: right;">{usdYield.toLocaleString("currency", {maximumFractionDigits: 2})} $</td>
       {/if}
     <tr>
       <td style="text-align: left;">DCA / Month</td>
-      {#if curRef == "EUR" || curRef == "eur"}
-      <td style="text-align: right;">{dcaView.toLocaleString("currency", {maximumFractionDigits: 2})} €</td>
+      {#if currency == "EUR" || currency == "eur"}
+      <td style="text-align: right;">{dca.toLocaleString("currency", {maximumFractionDigits: 2})} €</td>
       {:else}
-      <td style="text-align: right;">{dcaView.toLocaleString("currency", {maximumFractionDigits: 2})} $</td>
+      <td style="text-align: right;">{dca.toLocaleString("currency", {maximumFractionDigits: 2})} $</td>
       {/if}
     <tr>
       <td style="text-align: left;">DCA in &#8383;</td>
-      {#if curRef == "EUR" || curRef == "eur"}
+      {#if currency == "EUR" || currency == "eur"}
       <td style="text-align: right;">{dcaEUR.toFixed(5)} &#8383;</td>
       {:else}
       <td style="text-align: right;">{dcaUSD.toFixed(5)} &#8383;</td>
