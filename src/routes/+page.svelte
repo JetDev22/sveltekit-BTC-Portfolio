@@ -177,9 +177,9 @@
     <tr>
       <td style="text-align: left;">Portfolio Value</td>
       {#if currency == "EUR" || currency == "eur"}
-      <td style="text-align: right;">{pCost.toLocaleString("currency", {maximumFractionDigits: 2})} €</td>
+      <td style="text-align: right;">{pValEUR.toLocaleString("currency", {maximumFractionDigits: 2})} €</td>
       {:else}
-      <td style="text-align: right;">{pCost.toLocaleString("currency", {maximumFractionDigits: 2})} $</td>
+      <td style="text-align: right;">{pValUSD.toLocaleString("currency", {maximumFractionDigits: 2})} $</td>
       {/if}
     </tr>
     <tr>
