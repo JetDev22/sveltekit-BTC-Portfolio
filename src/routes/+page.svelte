@@ -171,7 +171,7 @@
  <table>
     <tbody>
     <tr>
-      <td style="text-align: left;">BTC owend</td>
+      <td style="text-align: left;">BTC owned</td>
       <td style="text-align: right;">{btc} &#8383;</td>
     </tr>
     <tr>
